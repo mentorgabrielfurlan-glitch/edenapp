@@ -1,0 +1,216 @@
+*** Begin Patch
+*** Add File: .gitignore
++# Node
++node_modules/
++dist/
++build/
++.env
++.env.local
++.env.*.local
++npm-debug.log*
++yarn-debug.log*
++yarn-error.log*
++/coverage
++
++# OS
++.DS_Store
++Thumbs.db
++
++# IDE
++.vscode/
++.idea/
++
++# Logs
++logs
++*.log
++
+*** End Patch
+*** Begin Patch
+*** Add File: .env.sample
++# Database
++DB_HOST=localhost
++DB_PORT=5432
++DB_USER=postgres
++DB_PASS=postgres
++DB_NAME=edenapp_dev
++
++# App
++PORT=3000
++NODE_ENV=development
++
+*** End Patch
+*** Begin Patch
+*** Add File: docker-compose.yml
++version: '3.8'
++services:
++  db:
++    image: postgres:15
++    restart: unless-stopped
++    environment:
++      POSTGRES_USER: postgres
++      POSTGRES_PASSWORD: postgres
++      POSTGRES_DB: edenapp_dev
++    ports:
++      - "5432:5432"
++    volumes:
++      - db_data:/var/lib/postgresql/data
++  pgadmin:
++    image: dpage/pgadmin4
++    restart: unless-stopped
++    environment:
++      PGADMIN_DEFAULT_EMAIL: admin@local
++      PGADMIN_DEFAULT_PASSWORD: admin
++    ports:
++      - "8080:80"
++volumes:
++  db_data:
++
+*** End Patch
+*** Begin Patch
+*** Add File: README.md
++# EdenApp
++
++Stack:
++- Backend: NestJS (Node)
++- Frontend: React
++- Database: Postgres
++- Package manager: npm
++
++Setup local (repositório raiz)
++
++1. Start DB
++```bash
++docker-compose up -d
++```
++
++2. Backend
++```bash
++cd backend
++cp .env.sample .env
++npm install
++npm run start:dev
++```
++- Se usar migrations: executar `npm run migrate` (verificar script).
++
++3. Frontend
++```bash
++cd web
++cp .env.sample .env
++npm install
++npm start
++```
++
++Workflows de CI estão em `.github/workflows/`. Para rodar testes locais, veja cada package.json em backend/ e web/.
++
++Contribuição: ler CONTRIBUTING.md
++
+*** End Patch
+*** Begin Patch
+*** Add File: CONTRIBUTING.md
++# Contributing
++
++- Abra uma issue antes de grandes mudanças.
++- Use branches com prefixo:
++  - feat/, fix/, chore/, refactor/, docs/
++- Faça PRs pequenos e auto-explicativos.
++- Adote ESLint e Prettier.
++- Execute `npm test` antes de abrir PR.
++
+*** End Patch
+*** Begin Patch
+*** Add File: CODE_OF_CONDUCT.md
++# Code of Conduct
++
++Seja respeitoso. Comportamento abusivo ou discriminatório resultará em remoção. Seja colaborativo e construtivo.
++
+*** End Patch
+*** Begin Patch
+*** Add File: .github/workflows/backend-ci.yml
++name: Backend CI
++
++on:
++  push:
++    paths:
++      - 'backend/**'
++  pull_request:
++    paths:
++      - 'backend/**'
++
++jobs:
++  test:
++    runs-on: ubuntu-latest
++    services:
++      postgres:
++        image: postgres:15
++        env:
++          POSTGRES_DB: edenapp_test
++          POSTGRES_USER: postgres
++          POSTGRES_PASSWORD: postgres
++        ports:
++          - 5432:5432
++        options: >-
++          --health-cmd pg_isready
++          --health-interval 10s
++          --health-timeout 5s
++          --health-retries 5
++    steps:
++      - uses: actions/checkout@v4
++      - name: Use Node.js
++        uses: actions/setup-node@v4
++        with:
++          node-version: 18
++      - name: Install backend deps
++        run: |
++          cd backend
++          npm ci
++      - name: Run lint
++        run: |
++          cd backend
++          npm run lint || true
++      - name: Run tests
++        env:
++          DB_HOST: 127.0.0.1
++          DB_PORT: 5432
++          DB_USER: postgres
++          DB_PASS: postgres
++          DB_NAME: edenapp_test
++        run: |
++          cd backend
++          npm test
++
+*** End Patch
+*** Begin Patch
+*** Add File: .github/workflows/frontend-ci.yml
++name: Frontend CI
++
++on:
++  push:
++    paths:
++      - 'web/**'
++  pull_request:
++    paths:
++      - 'web/**'
++
++jobs:
++  build:
++    runs-on: ubuntu-latest
++    steps:
++      - uses: actions/checkout@v4
++      - name: Use Node.js
++        uses: actions/setup-node@v4
++        with:
++          node-version: 18
++      - name: Install frontend deps
++        run: |
++          cd web
++          npm ci
++      - name: Lint
++        run: |
++          cd web
++          npm run lint || true
++      - name: Build
++        run: |
++          cd web
++          npm run build
++
+*** End Patch

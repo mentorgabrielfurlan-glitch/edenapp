@@ -1,3 +1,6 @@
+#!/bin/bash
+
+cat > docker-compose.yml <<'EOF'
 version: '3.8'
 services:
   db:
@@ -21,3 +24,6 @@ services:
       - "8080:80"
 volumes:
   db_data:
+EOF
+
+echo "✅ docker-compose.yml criado"

@@ -1,0 +1,86 @@
+# 1) Cria e troca para a branch
+git checkout -b chore/refactor-project-structure
+
+# 2) Cria .gitignore
+cat > .gitignore <<'EOF'
+# Node
+node_modules/
+dist/
+build/
+.env
+.env.local
+.env.*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+/coverage
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+logs
+*.log
+EOF
+
+# 3) Cria .env.sample
+cat > .env.sample <<'EOF'
+# Database
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=postgres
+DB_PASS=postgres
+DB_NAME=edenapp_dev
+
+# App
+PORT=3000
+NODE_ENV=development
+EOF
+
+# 4) Cria docker-compose.yml
+cat > docker-compose.yml <<'EOF'
+version: '3.8'
+services:
+  db:
+    image: postgres:15
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: edenapp_dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@local
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8080:80"
+volumes:
+  db_data:
+EOF
+
+# 5) Cria README.md
+cat > README.md <<'EOF'
+# EdenApp
+
+Stack:
+- Backend: NestJS (Node)
+- Frontend: React
+- Database: Postgres
+- Package manager: npm
+
+Setup local (repositório raiz)
+
+1. Start DB
+   ```bash
+   docker-compose up -d

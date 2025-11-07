@@ -1,3 +1,6 @@
+#!/bin/bash
+
+cat > .gitignore <<'EOF'
 # Node
 node_modules/
 dist/
@@ -21,3 +24,6 @@ Thumbs.db
 # Logs
 logs
 *.log
+EOF
+
+echo "✅ .gitignore criado"
