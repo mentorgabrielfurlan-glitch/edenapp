@@ -1,0 +1,5 @@
+  @Get('me')
+  @UseGuards(JwtAuthGuard)
+  async getProfile(@Req() req) {
+    return req.user;
+  }

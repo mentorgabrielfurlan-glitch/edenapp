@@ -1,0 +1,99 @@
+import { useEffect } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import VirtudesList from './pages/VirtudesList';
+import VirtudeDetail from './pages/VirtudeDetail';
+import { useAuthStore } from "./store/authStore";
+import ForgotPassword from './pages/auth/ForgotPassword';
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
+import Practices from "./pages/Practices";
+import Meditation from "./pages/practices/Meditation";
+import Breathing from "./pages/practices/Breathing";
+import Journaling from "./pages/practices/Journaling";
+import Virtues from "./pages/Virtues";
+import Humildade from "./pages/virtues/Humildade";
+
+function PrivateRoute({ children }: { children: React.ReactNode }) {
+  const { token } = useAuthStore();
+  return token ? <>{children}</> : <Navigate to="/login" />;
+}
+
+function App() {
+  const { checkAuth } = useAuthStore();
+
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/register" element={<Register />} />
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/practices"
+          element={
+            <PrivateRoute>
+              <Practices />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/practices/meditation"
+          element={
+            <PrivateRoute>
+              <Meditation />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/practices/breathing"
+          element={
+            <PrivateRoute>
+              <Breathing />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/practices/journaling"
+          element={
+            <PrivateRoute>
+              <Journaling />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/virtues"
+          element={
+            <PrivateRoute>
+              <Virtues />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/virtues/humildade"
+          element={
+            <PrivateRoute>
+              <Humildade />
+            </PrivateRoute>
+          }
+        />
+        <Route path="/" element={<Navigate to="/dashboard" />} />
+      <Route path="/virtudes" element={<VirtudesList />} />
+      <Route path="/virtudes/:slug" element={<VirtudeDetail />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+export default App;

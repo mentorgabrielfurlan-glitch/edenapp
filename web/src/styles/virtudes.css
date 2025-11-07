@@ -1,0 +1,16 @@
+.virtudes-list .cards { display:flex; gap:1rem; flex-wrap:wrap; }
+.virtude-card { width: 260px; border:1px solid #e6e6e6; border-radius:8px; overflow:hidden; background:#fff; }
+.virtude-card img { width:100%; height:140px; object-fit:cover; }
+.virtude-card .card-body { padding:12px; }
+.virtude-detail .virtude-content { margin: 1rem 0; line-height:1.6; }
+.affirmations { display:flex; gap:8px; flex-wrap:wrap; }
+.affirmation { border:1px solid #ddd; padding:8px; border-radius:6px; max-width:320px; }
+textarea { width:100%; padding:8px; border-radius:6px; border:1px solid #ccc; }
+.btn { background:#2f7a5f; color:white; padding:8px 12px; border-radius:6px; border:none; cursor:pointer; }
+.btn:hover { opacity:0.95; }
+.practices-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; }
+.practice-card { border: 1px solid #ddd; padding: 1rem; border-radius: 8px; }
+.stats { background: #f9f9f9; padding: 1rem; border-radius: 8px; }
+.practices-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; }
+.practice-card { border: 1px solid #ddd; padding: 1rem; border-radius: 8px; }
+.stats { background: #f9f9f9; padding: 1rem; border-radius: 8px; }

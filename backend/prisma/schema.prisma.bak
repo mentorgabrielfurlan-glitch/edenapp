@@ -1,0 +1,157 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  name          String
+  password      String?
+  googleId      String?   @unique
+  avatar        String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Journey Progress
+  currentStage  Int       @default(1)
+  currentLevel  Int       @default(1)
+  totalXP       Int       @default(0)
+  streak        Int       @default(0)
+  lastActive    DateTime  @default(now())
+
+  // Relations
+  progress      Progress[]
+  practices     UserPractice[]
+  achievements  Achievement[]
+  posts         CommunityPost[]
+  comments      Comment[]
+
+  @@map("users")
+}
+
+model Progress {
+  id          String   @id @default(uuid())
+  userId      String
+  stage       Int
+  level       Int
+  xp          Int      @default(0)
+  completed   Boolean  @default(false)
+  completedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("progress")
+  @@index([userId, stage])
+}
+
+model Practice {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  category    String   // "meditation", "breathing", "journaling", "gratitude"
+  duration    Int      // in minutes
+  stage       Int      // which stage this practice belongs to
+  xpReward    Int      @default(10)
+  content     String   @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  userPractices UserPractice[]
+
+  @@map("practices")
+}
+
+model UserPractice {
+  id          String   @id @default(uuid())
+  userId      String
+  practiceId  String
+  completed   Boolean  @default(false)
+  completedAt DateTime?
+  notes       String?  @db.Text
+  rating      Int?     // 1-5
+  createdAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  practice    Practice @relation(fields: [practiceId], references: [id], onDelete: Cascade)
+
+  @@map("user_practices")
+  @@index([userId, practiceId])
+}
+
+model Achievement {
+  id          String   @id @default(uuid())
+  userId      String
+  title       String
+  description String
+  icon        String
+  unlockedAt  DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("achievements")
+}
+
+model CommunityPost {
+  id          String   @id @default(uuid())
+  userId      String
+  content     String   @db.Text
+  category    String   // "reflection", "victory", "question", "support"
+  likes       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comments    Comment[]
+
+  @@map("community_posts")
+  @@index([userId])
+}
+
+model Comment {
+  id          String   @id @default(uuid())
+  postId      String
+  userId      String
+  content     String   @db.Text
+  createdAt   DateTime @default(now())
+
+  post        CommunityPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("comments")
+  @@index([postId])
+}
+
+model Notification {
+  id          String   @id @default(uuid())
+  userId      String
+  title       String
+  message     String
+  type        String   // "practice", "achievement", "community", "system"
+  read        Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@map("notifications")
+  @@index([userId, read])
+}
+
+model Virtue {
+  id          Int      @id @default(autoincrement())
+  slug        String   @unique
+  title       String
+  summary     String?
+  content     String
+  story       String?
+  questions   Json
+  exercises   Json
+  affirmations Json
+  images      Json
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

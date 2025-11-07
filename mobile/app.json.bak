@@ -1,0 +1,16 @@
+{
+  "expo": {
+    "name": "EDEN",
+    "slug": "eden",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "android": {
+      "package": "com.eden.app",
+      "permissions": [],
+      "versionCode": 1
+    },
+    "extra": {
+      "API_URL": "http://192.168.1.100:3001"
+    }
+  }
+}

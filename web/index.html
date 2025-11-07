@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ÉDEN - Mestre de Si Mesmo</title>
+
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              forest: {
+                50: '#f0f7f0',
+                100: '#e1efe1',
+                200: '#c3dfc3',
+                300: '#a5cfa5',
+                400: '#87bf87',
+                500: '#69af69',
+                600: '#4a8f4a',
+                700: '#2d5016',
+                800: '#1e3610',
+                900: '#0f1b08',
+              },
+              sage: {
+                50: '#f8faf8',
+                100: '#f1f5f1',
+                200: '#e3ebe3',
+                300: '#d5e1d5',
+                400: '#c7d7c7',
+                500: '#b9cdb9',
+                600: '#8fa98f',
+                700: '#657f65',
+                800: '#3b553b',
+                900: '#1d2a1d',
+              },
+            }
+          }
+        }
+      }
+    </script>
+
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+      * {
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Prevenir flash de tema errado */
+      html.dark {
+        background-color: #111827;
+      }
+    </style>
+
+    <!-- Script para prevenir flash -->
+    <script>
+      (function() {
+        const theme = localStorage.getItem('eden_theme');
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

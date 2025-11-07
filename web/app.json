@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "EDEN",
+    "slug": "eden",
+    "version": "1.0.0",
+    "android": {
+      "package": "com.eden.app"
+    }
+  }
+}

@@ -1,0 +1,315 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import ThemeToggle from '../../components/ThemeToggle';
+
+type Stage = 'saber' | 'fazer' | 'ser' | 'ter';
+
+export default function Humildade() {
+  const navigate = useNavigate();
+  const [currentStage, setCurrentStage] = useState<Stage>('saber');
+  const [completedActivities, setCompletedActivities] = useState<string[]>([]);
+
+  const stages = {
+    saber: {
+      title: '📚 SABER - Conhecimento',
+      subtitle: 'Compreenda o que é Humildade',
+      color: 'from-blue-500 to-cyan-500',
+      activities: [
+        {
+          id: 'teoria',
+          type: 'Leitura',
+          title: 'O que é Humildade?',
+          description: 'Entenda o conceito e o oposto: o orgulho',
+          icon: '📖',
+          points: 50
+        },
+        {
+          id: 'mapa-orgulho',
+          type: 'Estudo',
+          title: 'Mapa Mental do Orgulho',
+          description: 'Explore as variáveis do orgulho: vaidade, arrogância, controle...',
+          icon: '🗺️',
+          points: 50
+        },
+        {
+          id: 'perguntas',
+          type: 'Reflexão',
+          title: '10 Perguntas Reflexivas',
+          description: 'Responda perguntas sobre seu orgulho',
+          icon: '❓',
+          points: 100
+        },
+        {
+          id: 'quiz',
+          type: 'Quiz',
+          title: 'Quiz de Conhecimento',
+          description: 'Teste seu entendimento sobre humildade',
+          icon: '🎯',
+          points: 100
+        }
+      ]
+    },
+    fazer: {
+      title: '🛠️ FAZER - Prática',
+      subtitle: 'Exercite a Humildade no dia a dia',
+      color: 'from-orange-500 to-red-500',
+      activities: [
+        {
+          id: 'diario-orgulho',
+          type: 'Diário',
+          title: 'Diário do Orgulho',
+          description: 'Anote situações que te deixam nervoso, triste ou com raiva',
+          icon: '📔',
+          points: 100,
+          duration: '7 dias'
+        },
+        {
+          id: 'aceitar-criticas',
+          type: 'Desafio',
+          title: 'Aceitar Críticas',
+          description: 'Pratique receber feedback sem se defender',
+          icon: '🎭',
+          points: 150,
+          duration: '3 dias'
+        },
+        {
+          id: 'servir-outros',
+          type: 'Ação',
+          title: 'Servir aos Outros',
+          description: 'Ajude alguém sem esperar reconhecimento',
+          icon: '🤝',
+          points: 150,
+          duration: '5 ações'
+        },
+        {
+          id: 'meditacao-humildade',
+          type: 'Meditação',
+          title: 'Meditação da Humildade',
+          description: 'Reflita sobre momentos de orgulho',
+          icon: '🧘',
+          points: 100,
+          duration: '10 min'
+        },
+        {
+          id: 'afirmacoes',
+          type: 'Afirmações',
+          title: 'Afirmações Diárias',
+          description: 'Repita as afirmações da humildade',
+          icon: '🗣️',
+          points: 50,
+          duration: '21 dias'
+        }
+      ]
+    },
+    ser: {
+      title: '✨ SER - Incorporação',
+      subtitle: 'Torne-se a Humildade',
+      color: 'from-purple-500 to-pink-500',
+      activities: [
+        {
+          id: 'autoavaliacao',
+          type: 'Avaliação',
+          title: 'Autoavaliação Profunda',
+          description: 'Identifique suas expressões de orgulho',
+          icon: '🔍',
+          points: 200
+        },
+        {
+          id: 'plano-mudanca',
+          type: 'Planejamento',
+          title: 'Plano de Mudança',
+          description: 'Crie estratégias para dominar o orgulho',
+          icon: '📋',
+          points: 200
+        },
+        {
+          id: 'desafio-30dias',
+          type: 'Desafio',
+          title: 'Desafio 30 Dias',
+          description: 'Pratique humildade consistentemente',
+          icon: '📅',
+          points: 500,
+          duration: '30 dias'
+        },
+        {
+          id: 'mentor',
+          type: 'Mentoria',
+          title: 'Compartilhe Aprendizados',
+          description: 'Ensine sobre humildade para alguém',
+          icon: '👥',
+          points: 300
+        }
+      ]
+    },
+    ter: {
+      title: '🏆 TER - Maestria',
+      subtitle: 'Viva a Humildade naturalmente',
+      color: 'from-emerald-500 to-teal-500',
+      activities: [
+        {
+          id: 'certificacao',
+          type: 'Certificação',
+          title: 'Certificação de Maestria',
+          description: 'Demonstre domínio da virtude',
+          icon: '🎓',
+          points: 1000
+        },
+        {
+          id: 'testemunho',
+          type: 'Testemunho',
+          title: 'Compartilhe sua Jornada',
+          description: 'Inspire outros com sua transformação',
+          icon: '📢',
+          points: 500
+        },
+        {
+          id: 'mentor-virtude',
+          type: 'Mentoria',
+          title: 'Torne-se Mentor',
+          description: 'Guie outros na jornada da humildade',
+          icon: '🌟',
+          points: 1000
+        }
+      ]
+    }
+  };
+
+  const currentStageData = stages[currentStage];
+  const totalActivities = currentStageData.activities.length;
+  const completedCount = currentStageData.activities.filter(a => 
+    completedActivities.includes(a.id)
+  ).length;
+  const stageProgress = (completedCount / totalActivities) * 100;
+
+  const handleActivityClick = (activityId: string) => {
+    navigate('/virtues/humildade/' + activityId);
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-gray-900 dark:to-emerald-950 transition-colors">
+      <header className="bg-white dark:bg-gray-800 border-b border-emerald-200 dark:border-gray-700">
+        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+          <button
+            onClick={() => navigate('/virtues')}
+            className="flex items-center gap-3 hover:opacity-80 transition"
+          >
+            <span className="text-4xl">🌳</span>
+            <div>
+              <h1 className="text-2xl font-bold text-emerald-900 dark:text-emerald-100">Humildade</h1>
+              <p className="text-sm text-emerald-600 dark:text-emerald-400">Dominar o Orgulho</p>
+            </div>
+          </button>
+          <ThemeToggle />
+        </div>
+      </header>
+
+      <main className="max-w-6xl mx-auto px-4 py-8">
+        {/* Navegação das Etapas */}
+        <div className="grid grid-cols-4 gap-4 mb-8">
+          {(['saber', 'fazer', 'ser', 'ter'] as Stage[]).map((stage, index) => {
+            const stageData = stages[stage];
+            const isActive = currentStage === stage;
+            const isCompleted = false; // TODO: implementar lógica
+
+            return (
+              <button
+                key={stage}
+                onClick={() => setCurrentStage(stage)}
+                className={'relative p-4 rounded-xl border-2 transition-all ' + 
+                  (isActive 
+                    ? 'border-emerald-500 dark:border-emerald-600 bg-white dark:bg-gray-800 shadow-lg' 
+                    : 'border-emerald-200 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50 hover:bg-white dark:hover:bg-gray-800')}
+              >
+                <div className="text-3xl mb-2">{stageData.title.split(' ')[0]}</div>
+                <div className="font-bold text-emerald-900 dark:text-emerald-100 text-sm">
+                  {stage.toUpperCase()}
+                </div>
+                {isCompleted && (
+                  <div className="absolute top-2 right-2 text-green-500">✓</div>
+                )}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Conteúdo da Etapa Atual */}
+        <div className="mb-8">
+          <div className={'p-6 rounded-2xl bg-gradient-to-r ' + currentStageData.color + ' text-white mb-6'}>
+            <h2 className="text-3xl font-bold mb-2">{currentStageData.title}</h2>
+            <p className="text-white/90">{currentStageData.subtitle}</p>
+
+            <div className="mt-4">
+              <div className="flex justify-between text-sm mb-2">
+                <span>Progresso: {completedCount}/{totalActivities}</span>
+                <span>{Math.round(stageProgress)}%</span>
+              </div>
+              <div className="w-full bg-white/30 rounded-full h-3">
+                <div
+                  className="bg-white h-full rounded-full transition-all"
+                  style={{ width: stageProgress + '%' }}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Atividades */}
+          <div className="grid md:grid-cols-2 gap-6">
+            {currentStageData.activities.map((activity) => {
+              const isCompleted = completedActivities.includes(activity.id);
+
+              return (
+                <button
+                  key={activity.id}
+                  onClick={() => handleActivityClick(activity.id)}
+                  className="bg-white dark:bg-gray-800 rounded-2xl p-6 border-2 border-emerald-200 dark:border-gray-700 hover:border-emerald-500 dark:hover:border-emerald-600 transition-all hover:shadow-xl text-left"
+                >
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className="text-5xl">{activity.icon}</div>
+                    <div className="flex-1">
+                      <div className="flex items-start justify-between mb-1">
+                        <h3 className="text-xl font-bold text-emerald-900 dark:text-emerald-100">
+                          {activity.title}
+                        </h3>
+                        {isCompleted && <span className="text-2xl">✓</span>}
+                      </div>
+                      <span className="text-xs bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300 px-2 py-1 rounded-full">
+                        {activity.type}
+                      </span>
+                    </div>
+                  </div>
+
+                  <p className="text-emerald-600 dark:text-emerald-400 mb-4">
+                    {activity.description}
+                  </p>
+
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4 text-sm">
+                      <span className="text-amber-600 dark:text-amber-400 font-bold">
+                        +{activity.points} XP
+                      </span>
+                      {activity.duration && ( para {activity.duration ? (
+                        <span className="text-emerald-600 dark:text-emerald-400">
+                          ⏱️ {activity.duration}
+                        </span>
+                      ) : null}
+                    </div>
+                    <span className="text-emerald-700 dark:text-emerald-300 font-medium">
+                      {isCompleted ? 'Revisar' : 'Iniciar'} →
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <button
+          onClick={() => navigate('/virtues')}
+          className="w-full bg-emerald-100 dark:bg-gray-700 text-emerald-900 dark:text-emerald-100 py-3 px-6 rounded-xl font-medium hover:bg-emerald-200 dark:hover:bg-gray-600 transition"
+        >
+          ← Voltar às Virtudes
+        </button>
+      </main>
+    </div>
+  );
+}
