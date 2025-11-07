@@ -18,7 +18,9 @@ cp .env.sample .env
 npm install
 npm run start:dev
 ```
-Observação: se o projeto usa migrations (TypeORM/Prisma), execute o comand### 3) Frontend
+Observação: se o projeto usa migrations (TypeORM/Prisma), execute o comando de
+migração apropriado (ex.: `npm run migrate`).
+### 3) Frontend
 ```bash
 cd web
 cp .env.sample .env
@@ -31,7 +33,9 @@ npm start
 - Para rodar testes locais:
  - Backend: `cd backend && npm test`
  - Frontend: `cd web && npm test`
-Ajuste os nomes dos scripts caso `package.json` use comandos diferentes (p---
+Ajuste os nomes dos scripts caso `package.json` use comandos diferentes (por exemplo
+`test:unit`, `start:dev` etc).
+---
 ## Contribuição
 Leia o arquivo `CONTRIBUTING.md` para orientações sobre:
 - Abrir issues antes de grandes mudanças
