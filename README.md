@@ -1,31 +1,40 @@
 # EdenApp
-
-Stack:
+## Stack
 - Backend: NestJS (Node)
 - Frontend: React
 - Database: Postgres
 - Package manager: npm
-
-Setup local (repositório raiz)
-
-1. Start DB
-   ```bash
-   docker-compose up -d
-Backend
-bash
-Copy
+---
+## Setup local (repositório raiz)
+### 1) Iniciar banco de dados
+Suba o ambiente de desenvolvimento do banco com Docker Compose:
+```bash
+docker-compose up -d
+```
+### 2) Backend
+```bash
 cd backend
 cp .env.sample .env
 npm install
 npm run start:dev
-Se usar migrations: executar npm run migrate (verificar script).
-Frontend
-bash
-Copy
+```
+Observação: se o projeto usa migrations (TypeORM/Prisma), execute o comand### 3) Frontend
+```bash
 cd web
 cp .env.sample .env
 npm install
 npm start
-Workflows de CI estão em .github/workflows/. Para rodar testes locais, veja cada package.json em backend/ e web/.
-
-Contribuição: ler CONTRIBUTING.md
+```
+---
+## Testes e CI
+- Workflows de CI estão em `.github/workflows/`.
+- Para rodar testes locais:
+ - Backend: `cd backend && npm test`
+ - Frontend: `cd web && npm test`
+Ajuste os nomes dos scripts caso `package.json` use comandos diferentes (p---
+## Contribuição
+Leia o arquivo `CONTRIBUTING.md` para orientações sobre:
+- Abrir issues antes de grandes mudanças
+- Padrões de branch (ex.: `feat/`, `fix/`, `chore/`, `refactor/`)
+- Formato de commits e PRs
+- Uso de ESLint / Prettier e execução de `npm test` antes de abrir PR
